@@ -1,11 +1,319 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>WHETHERSA - Responsive Weather Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind config for custom transitions & dark mode class strategy
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+    </style>
 </head>
-<body>
-    
+
+<body
+    class="bg-gray-200 dark:bg-gray-950 text-gray-800 dark:text-gray-100 min-h-screen flex items-center justify-center p-4 md:p-8 transition-colors duration-500">
+
+    <!-- Main Container -->
+    <div
+        class="w-full max-w-7xl bg-gray-100 dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[750px] transition-all duration-500 border border-gray-200 dark:border-gray-800">
+
+        <!-- Left Sidebar (Current Weather) -->
+        <div
+            class="lg:col-span-4 bg-white dark:bg-gray-900 p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800 transition-colors duration-500">
+            <!-- Top Search Bar -->
+            <div>
+                <div class="relative flex items-center mb-8">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 text-gray-400 dark:text-gray-500"></i>
+                    <input type="text" placeholder="Search for place..."
+                        class="w-full bg-gray-100 dark:bg-gray-800 py-3 pl-11 pr-10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200 font-medium placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-300">
+                    <i
+                        class="fa-solid fa-location-crosshairs absolute right-4 text-gray-400 hover:text-blue-500 cursor-pointer transition-colors"></i>
+                </div>
+
+                <!-- Main Weather Illustration with Animation -->
+                <div class="my-6 flex justify-center py-4">
+                    <div class="relative animate-float">
+                        <!-- Sun & Cloud Illustration -->
+                        <i
+                            class="fa-solid fa-sun text-yellow-400 dark:text-yellow-300 text-6xl absolute -top-4 right-2 animate-spin-slow"></i>
+                        <i
+                            class="fa-solid fa-cloud-showers-heavy text-gray-300 dark:text-gray-600 text-8xl relative z-10 drop-shadow-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Temperature -->
+                <div class="mt-8">
+                    <h1 class="text-7xl font-light tracking-tight text-gray-900 dark:text-white">12<span
+                            class="text-4xl align-top font-extralight">°C</span></h1>
+                </div>
+
+                <!-- Date & City -->
+                <div
+                    class="mt-6 pb-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-baseline">
+                    <span class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Paris</span>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Monday, <span
+                            class="text-gray-400 dark:text-gray-500">May 3</span></span>
+                </div>
+
+                <!-- Weather Description & Time -->
+                <div class="mt-6 space-y-3">
+                    <div class="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
+                        <i class="fa-solid fa-cloud-sun-rain text-gray-400 dark:text-gray-500 w-5"></i>
+                        <span class="text-sm font-medium">Patchy Drizzle Day</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
+                        <i class="fa-regular fa-clock text-gray-400 dark:text-gray-500 w-5"></i>
+                        <span class="text-sm font-medium">16:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Profile / Context -->
+            <div class="mt-8 pt-4">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold shadow-sm">
+                        US
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Weather Dashboard</p>
+                        <p class="text-[11px] text-gray-400 dark:text-gray-500">Live Updates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Main Content Area -->
+        <div
+            class="lg:col-span-8 p-6 md:p-10 flex flex-col justify-between bg-gray-50 dark:bg-gray-950/60 transition-colors duration-500">
+
+            <!-- Top Bar: Logo & Toggles -->
+            <div>
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-black tracking-wider text-gray-900 dark:text-white uppercase">WHETHERSA</h2>
+
+                    <div class="flex items-center space-x-3">
+                        <!-- Dark / Light Mode Toggle Button -->
+                        <button id="themeToggle"
+                            class="p-2.5 rounded-full bg-white dark:bg-gray-800 text-gray-700 dark:text-amber-400 shadow-md hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center w-10 h-10 border border-gray-200 dark:border-gray-700"
+                            title="Toggle Theme">
+                            <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+                        </button>
+
+                        <!-- °C / °F Switcher -->
+                        <div
+                            class="flex items-center bg-gray-200 dark:bg-gray-800 p-1 rounded-full shadow-inner border border-gray-300/40 dark:border-gray-700">
+                            <button
+                                class="w-8 h-8 rounded-full bg-black dark:bg-blue-600 text-white text-xs font-bold shadow transition-all">°C</button>
+                            <button
+                                class="w-8 h-8 rounded-full text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-xs font-bold transition-all">°F</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7-Day Forecast Cards -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-10">
+
+                    <!-- Tue -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Tue</span>
+                        <i
+                            class="fa-solid fa-cloud-sun text-2xl text-yellow-500 dark:text-yellow-400 animate-pulse-slow"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">12° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">2°</span></span>
+                    </div>
+
+                    <!-- Wed -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Wed</span>
+                        <i class="fa-solid fa-cloud text-2xl text-gray-400 dark:text-gray-300"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">22° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">5°</span></span>
+                    </div>
+
+                    <!-- Thu -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Thu</span>
+                        <i class="fa-solid fa-cloud-rain text-2xl text-blue-400"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">1° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">2°</span></span>
+                    </div>
+
+                    <!-- Fri -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Fri</span>
+                        <i class="fa-solid fa-moon text-2xl text-yellow-400"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">21° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">4°</span></span>
+                    </div>
+
+                    <!-- Sat -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sat</span>
+                        <i class="fa-solid fa-cloud-bolt text-2xl text-purple-400"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">6° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">-1°</span></span>
+                    </div>
+
+                    <!-- Sun -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-4 rounded-2xl flex flex-col items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-36 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sun</span>
+                        <i class="fa-solid fa-sun text-2xl text-amber-500"></i>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">8° <span
+                                class="text-xs text-gray-400 dark:text-gray-500 font-normal">3°</span></span>
+                    </div>
+
+                </div>
+
+                <!-- Today's Highlights Section -->
+                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-5">Today's Highlights</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+                    <!-- UV Index -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">UV Index</span>
+                        <div class="flex flex-col items-center my-auto">
+                            <div class="relative flex items-center justify-center">
+                                <i class="fa-solid fa-sun text-yellow-400 text-4xl animate-spin-slow"></i>
+                                <i
+                                    class="fa-solid fa-triangle-exclamation text-red-500 text-xs absolute -bottom-1 -right-1"></i>
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-center items-center space-x-1.5 text-[10px] text-gray-300 dark:text-gray-600 font-bold">
+                            <span>1</span><span>2</span><span>3</span><span
+                                class="text-black dark:text-white text-sm">4</span><span>5</span><span>6</span><span>7</span>
+                        </div>
+                    </div>
+
+                    <!-- Wind Status -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">Wind Status</span>
+                        <div class="flex items-baseline my-auto">
+                            <span class="text-4xl font-light text-gray-800 dark:text-gray-100">7.70</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">km/h</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 dark:text-gray-400">
+                            <i class="fa-solid fa-wind mr-2 text-blue-400"></i>
+                            <span class="text-xs">WSW</span>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise & Sunset -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">Sunrise & Sunset</span>
+                        <div class="space-y-3 my-auto">
+                            <div class="flex items-center space-x-3">
+                                <i
+                                    class="fa-solid fa-arrow-up text-amber-500 bg-amber-50 dark:bg-amber-900/30 p-2 rounded-full text-xs"></i>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-800 dark:text-gray-200">06:30 AM</p>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-500">-1m 32s</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i
+                                    class="fa-solid fa-arrow-down text-orange-500 bg-orange-50 dark:bg-orange-900/30 p-2 rounded-full text-xs"></i>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-800 dark:text-gray-200">08:43 PM</p>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-500">+2m 43s</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Humidity -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">Humidity</span>
+                        <div class="flex items-baseline my-auto">
+                            <span class="text-4xl font-light text-gray-800 dark:text-gray-100">12</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-0.5">%</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-400 dark:text-gray-400">
+                            <i class="fa-solid fa-droplet mr-2 text-blue-400"></i>
+                            <span>Normal</span>
+                        </div>
+                    </div>
+
+                    <!-- Visibility -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">Visibility</span>
+                        <div class="flex items-baseline my-auto">
+                            <span class="text-4xl font-light text-gray-800 dark:text-gray-100">5.2</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">km</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-400 dark:text-gray-400">
+                            <i class="fa-solid fa-eye mr-2 text-emerald-400"></i>
+                            <span>Clear sky</span>
+                        </div>
+                    </div>
+
+                    <!-- Air Quality -->
+                    <div
+                        class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between h-44 border border-gray-100 dark:border-gray-700/50">
+                        <span class="text-xs font-semibold text-gray-400 dark:text-gray-400">Air Quality</span>
+                        <div class="flex items-baseline my-auto">
+                            <span class="text-4xl font-light text-gray-800 dark:text-gray-100">105</span>
+                        </div>
+                        <div class="flex items-center text-xs text-amber-500 font-medium">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                            <span>Unhealthy</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer info -->
+            <div class="mt-8 text-center text-xs text-gray-400 dark:text-gray-500">
+                WHETHERSA • Responsive Weather Dashboard
+            </div>
+
+        </div>
+
+    </div>
+    <script src="app.js"></script>
 </body>
+
 </html>
